@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <title>AJAX</title>
+</head>
+
+<body>
+
+  <div class="jumbotron text-center">
+    <div class="btn btn-primary" onclick="loadDoc()">Change Content</div>
+  </div>
+  <div class="container">
+    <table id="userTable" class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col" name="id">#</th>
+          <th scope="col" name="name">Name</th>
+          <th scope="col" name="username">User Name</th>
+          <th scope="col" name="email">Email Address</th>
+          <th scope="col" name="phone">Phone Number</th>
+          <th scope="col" name="website">Website</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <script>
+
+
+
+    var dataReceived;
+
+    function loadDoc() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          dataReceived = JSON.parse(this.responseText);
+          $('#userTable tbody').empty();
+          dataReceived.forEach(user => {
+              var tableHeads = $('#userTable thead tr').children();
+              // console.log(tableHeads);
+              $('#userTable tbody').append('<tr><tr>');
+              for (var index = 0; index < tableHeads.length; index++) {
+                var element = tableHeads[index];
+                var valuetoCallBy = $(element).attr('name');
+                $('#userTable tbody tr:last').append('<td>' + user[valuetoCallBy] + '</td>');
+              }
+          });
+        }
+      };
+      xhttp.open("GET", "https://jsonplaceholder.typicode.com/users", true);
+      xhttp.send();
+    }
+  </script>
+
+</body>
+
+</html>
